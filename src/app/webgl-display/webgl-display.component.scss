@@ -1,3 +1,19 @@
 img.hide {
-  display: none;
+  width: 10cm;
+}
+
+div {
+  image-rendering: pixelated;
+}
+
+div.container {
+  display: flex;
+  div {
+    display: flex;
+    align-items: center;
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
 }

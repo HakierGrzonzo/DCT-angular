@@ -14,41 +14,31 @@ interface QuantConstants {
 export class WebglDisplayComponent {
   @ViewChild('canvasContainer', {static: true}) canvas!: ElementRef;
   @ViewChild('sourceIMG', {static: true}) img!: ElementRef;
+  gpu = new GPU()
   quantTable : number[][] = [
-    [16, 11, 10, 16, 24, 40, 51, 61],
-    [12, 12, 14, 19, 26, 58, 60, 55],
-    [14, 13, 16, 24, 40, 57, 69, 56],
-    [14, 17, 22, 29, 51, 87, 80, 62],
-    [18, 22, 37, 56, 68, 109, 103, 77],
-    [24, 35, 55, 64, 81, 104, 113, 92],
-    [49, 64, 78, 87, 103, 121, 120, 101],
-    [72, 92, 95, 98, 112, 100, 103, 99]
+    [16, 11, 10, 16, 24,  40,   51,   61],
+    [12, 12, 14, 19, 26,  58,   60,   55],
+    [14, 13, 16, 24, 40,  57,   69,   56],
+    [14, 17, 22, 29, 51,  87,   80,   62],
+    [18, 22, 37, 56, 68,  109,  103,  77],
+    [24, 35, 55, 64, 81,  104,  113,  92],
+    [49, 64, 78, 87, 103, 121,  120,  101],
+    [72, 92, 95, 98, 112, 100,  103,  99]
   ]
 
   constructor() { }
 
   ngAfterViewInit(): void {
-    const gpu = new GPU();
     const size = 64
     this.img.nativeElement.onload = () => {
-      const render = gpu.createKernel(function (image: any) {
-        function alpha(u: any): any {
-          if (u == 0) {
-            return .7071
+      const performDCT = this.gpu.createKernel(function (quants: any, image: any) {
+        function alpha(z: any): any {
+          if (z == 0) {
+            return 1 / Math.sqrt(2)
           } else {
             return 1
           }
         }
-        const quants = [
-          [16, 11, 10, 16, 24, 40, 51, 61],
-          [12, 12, 14, 19, 26, 58, 60, 55],
-          [14, 13, 16, 24, 40, 57, 69, 56],
-          [14, 17, 22, 29, 51, 87, 80, 62],
-          [18, 22, 37, 56, 68, 109, 103, 77],
-          [24, 35, 55, 64, 81, 104, 113, 92],
-          [49, 64, 78, 87, 103, 121, 120, 101],
-          [72, 92, 95, 98, 112, 100, 103, 99]
-        ]
         const u = this.thread.x % 8
         const v = this.thread.y % 8
         const base_x = this.thread.x - u
@@ -62,16 +52,38 @@ export class WebglDisplayComponent {
             sum += color * Math.cos(((2 * x + 1) * u * 3.14) / 16) * Math.cos(((2 * y + 1) * v * 3.14) / 16)
           }
         }
-        const res = Math.round(post_dct * sum / quants[u][v])
+        const res = Math.round(post_dct * sum / quants[v][u])
+        return res
+      }).setOutput([8 * size, 8 * size])
+
+      const decodeDCT = this.gpu.createKernel(function (quants: any, data: any) {
+        function alpha(z: any): any {
+          if (z == 0) {
+            return 1 / Math.sqrt(2)
+          } else {
+            return 1
+          }
+        }
+        const base_x = this.thread.x - this.thread.x % 8
+        const base_y = this.thread.y - this.thread.y % 8
+        let sum = 0
+        for (let u = 0; u < 8; u++) {
+          for (let v = 0; v < 8; v++) {
+            const post_dct = alpha(u) * alpha(v) * (data[base_y + u][base_x + v] / 128) * quants[v][u];
+            sum += post_dct * Math.cos(((2 * (this.thread.x % 8) + 1) * v * 3.14) / 16) * Math.cos(((2 * (this.thread.y % 8) + 1) * u * 3.14) / 16)
+          }
+        }
+        const res = sum / 4 + .5
+        //const res = data[this.thread.y][this.thread.x] / 128 * quants[this.thread.y % 8][this.thread.x % 8] + .5
         this.color(res, res, res)
-      }).setConstants({quants: this.quantTable})
-        .setOutput([8 * size, 8 * size])
+      }).setOutput([8 * size, 8 * size])
         .setGraphical(true)
-      render(this.img.nativeElement)
-      console.log(this.img)
-      this.canvas.nativeElement.appendChild(render.canvas)
+
+      let dct = performDCT(this.quantTable, this.img.nativeElement)
+      console.log(dct)
+      decodeDCT(this.quantTable, dct)
+      this.canvas.nativeElement.appendChild(decodeDCT.canvas)
     }
-    console.log(gpu);
   }
 
 }
