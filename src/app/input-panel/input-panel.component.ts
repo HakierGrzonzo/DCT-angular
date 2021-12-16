@@ -15,17 +15,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class InputPanelComponent implements ControlValueAccessor {
-  @Input() cols: number = 4
   _values: number[][]
   constructor() {
-    this._values = []
-    for (let i = 0; i < 8; i++) {
-      let tmp = []
-      for (let j = 0; j < 8; j++) {
-        tmp.push(0)
-      }
-      this._values.push(tmp)
-    }
   }
 
   getStyle(c: number): any {
@@ -33,7 +24,6 @@ export class InputPanelComponent implements ControlValueAccessor {
     if (val.length < 2) {
       val = "0" + val
     }
-    console.log(val)
     let textcol = c > 128 ? "#000000" : "#FFFFFF"
     const style = {
       background: "#" + val + val + val,
@@ -43,8 +33,7 @@ export class InputPanelComponent implements ControlValueAccessor {
   }
 
   onedit(i: number, j:number, e: any) {
-    console.log(i, j, e.target.value)
-    this._values[i][j] = e.target.value
+    this._values[i][j] = parseInt(e.target.value)
     this.propagateChange(this._values)
   }
 
@@ -52,13 +41,13 @@ export class InputPanelComponent implements ControlValueAccessor {
     return this._values
   }
 
-  set values(v: number[][]) {
+  set values(v: any) {
     this._values = v
     this.propagateChange(v)
   }
 
   writeValue(newValue: any) {
-    if (newValue !== undefined) {
+    if (newValue !== undefined && newValue !== null) {
       this.values = newValue
     }
   }

@@ -5,16 +5,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { WebglDisplayComponent } from './webgl-display/webgl-display.component';
 import { InputPanelComponent } from './input-panel/input-panel.component';
+import { OutputPanelComponent } from './output-panel/output-panel.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     WebglDisplayComponent,
-    InputPanelComponent
+    InputPanelComponent,
+    OutputPanelComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

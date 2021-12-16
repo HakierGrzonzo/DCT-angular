@@ -29,9 +29,10 @@ export class WebglDisplayComponent {
   constructor() { }
 
   ngAfterViewInit(): void {
+    const blocksize = 8
     const size = 64
     this.img.nativeElement.onload = () => {
-      const performDCT = this.gpu.createKernel(function (quants: any, image: any) {
+      const performDCT = this.gpu.createKernel(function (blocksize: any, quants: any, image: any) {
         function alpha(z: any): any {
           if (z == 0) {
             return 1 / Math.sqrt(2)
@@ -39,24 +40,24 @@ export class WebglDisplayComponent {
             return 1
           }
         }
-        const u = this.thread.x % 8
-        const v = this.thread.y % 8
+        const u = this.thread.x % blocksize
+        const v = this.thread.y % blocksize
         const base_x = this.thread.x - u
         const base_y = this.thread.y - v
-        const post_dct = 1/4 * alpha(u) * alpha(v)
+        const post_dct = 1/(blocksize / 2) * alpha(u) * alpha(v)
         let sum = 0
-        for (let x = 0; x < 8; x++) {
-          for (let y = 0; y < 8; y++) {
+        for (let x = 0; x < blocksize; x++) {
+          for (let y = 0; y < blocksize; y++) {
             const pixel = image[base_y + y][base_x + x];
-            const color = ((pixel[0] + pixel[1] + pixel[2]) / 3 - .5) * 128;
-            sum += color * Math.cos(((2 * x + 1) * u * 3.14) / 16) * Math.cos(((2 * y + 1) * v * 3.14) / 16)
+            const color = ((pixel[0] + pixel[1] + pixel[2]) / 3) * 256;
+            sum += post_dct * color * Math.cos(((2 * x + 1) * u * 3.14) / (2 * blocksize)) * Math.cos(((2 * y + 1) * v * 3.14) / (2 * blocksize))  / quants[v][u]
           }
         }
-        const res = Math.round(post_dct * sum / quants[v][u])
+        const res = Math.round(sum)
         return res
       }).setOutput([8 * size, 8 * size])
 
-      const decodeDCT = this.gpu.createKernel(function (quants: any, data: any) {
+      const decodeDCT = this.gpu.createKernel(function (blocksize: any, quants: any, data: any) {
         function alpha(z: any): any {
           if (z == 0) {
             return 1 / Math.sqrt(2)
@@ -64,24 +65,23 @@ export class WebglDisplayComponent {
             return 1
           }
         }
-        const base_x = this.thread.x - this.thread.x % 8
-        const base_y = this.thread.y - this.thread.y % 8
+        const base_x = this.thread.x - this.thread.x % blocksize
+        const base_y = this.thread.y - this.thread.y % blocksize
         let sum = 0
-        for (let u = 0; u < 8; u++) {
-          for (let v = 0; v < 8; v++) {
-            const post_dct = alpha(u) * alpha(v) * (data[base_y + u][base_x + v] / 128) * quants[v][u];
-            sum += post_dct * Math.cos(((2 * (this.thread.x % 8) + 1) * v * 3.14) / 16) * Math.cos(((2 * (this.thread.y % 8) + 1) * u * 3.14) / 16)
+        for (let u = 0; u < blocksize; u++) {
+          for (let v = 0; v < blocksize; v++) {
+            const post_dct = alpha(u) * alpha(v) * (data[base_y + u][base_x + v] / 256) * quants[v][u];
+            sum += post_dct * Math.cos(((2 * (this.thread.x % blocksize) + 1) * v * 3.14) / (2 * blocksize)) * Math.cos(((2 * (this.thread.y % blocksize) + 1) * u * 3.14) / (2 * blocksize)) / (blocksize / 2)
           }
         }
-        const res = sum / 4 + .5
         //const res = data[this.thread.y][this.thread.x] / 128 * quants[this.thread.y % 8][this.thread.x % 8] + .5
-        this.color(res, res, res)
+        this.color(sum, sum, sum)
       }).setOutput([8 * size, 8 * size])
         .setGraphical(true)
 
-      let dct = performDCT(this.quantTable, this.img.nativeElement)
+      let dct = performDCT(blocksize, this.quantTable, this.img.nativeElement)
       console.log(dct)
-      decodeDCT(this.quantTable, dct)
+      decodeDCT(blocksize, this.quantTable, dct)
       this.canvas.nativeElement.appendChild(decodeDCT.canvas)
     }
   }
