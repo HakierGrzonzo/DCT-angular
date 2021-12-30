@@ -1,16 +1,14 @@
-
-div.container {
-  div.row {
+div.row {
     display: flex;
     flex-direction: row;
     div.col {
-      width: 20mm;
-      height: 20mm;
-      display: flex;
-      span {
-        flex: 1;
-      }
+        width: 20mm;
+        height: 10mm;
+        display: flex;
+        text-align: center;
+        span {
+            flex: 1;
+            padding-top: 2mm;
+        }
     }
-  }
 }
-

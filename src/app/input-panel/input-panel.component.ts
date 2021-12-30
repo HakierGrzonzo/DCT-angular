@@ -1,5 +1,7 @@
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Matrix } from '../matrix';
+import { Value } from '../value';
 
 
 @Component({
@@ -15,48 +17,51 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class InputPanelComponent implements ControlValueAccessor {
-  _values: number[][]
-  constructor() {
-  }
-
-  getStyle(c: number): any {
-    let val = new Number(c).toString(16)
-    if (val.length < 2) {
-      val = "0" + val
+    _values : Matrix = new Matrix((v) => {this.propagateChange(this.values)});
+    constructor() {
     }
-    let textcol = c > 128 ? "#000000" : "#FFFFFF"
-    const style = {
-      background: "#" + val + val + val,
-      color: textcol
+
+    getStyle(c: Value): any {
+        let val = new Number(c.val).toString(16)
+        if (val.length < 2) {
+            val = "0" + val
+        }
+        let textcol = c.val > 128 ? "#000000" : "#FFFFFF"
+        const style = {
+            background: "#" + val + val + val,
+            color: textcol
+        }
+        return style
     }
-    return style
-  }
 
-  onedit(i: number, j:number, e: any) {
-    this._values[i][j] = parseInt(e.target.value)
-    this.propagateChange(this._values)
-  }
-
-  get values() {
-    return this._values
-  }
-
-  set values(v: any) {
-    this._values = v
-    this.propagateChange(v)
-  }
-
-  writeValue(newValue: any) {
-    if (newValue !== undefined && newValue !== null) {
-      this.values = newValue
+    get values() {
+        return this._values.mat
     }
-  }
 
-  propagateChange = (_: any) => {}
+    set values(v: any) {
+        this._values.mat = v
+        this.propagateChange(v)
+    }
 
-  registerOnChange(fn: any) {
-    this.propagateChange = fn
-  }
+    writeValue(newValue: any) {
+        if (newValue !== undefined && newValue !== null) {
+          this.values = newValue
+        }
+    }
 
-  registerOnTouched() {}
+    propagateChange = (_: any) => {}
+
+    registerOnChange(fn: any) {
+        this.propagateChange = fn
+    }
+
+    registerOnTouched() {}
+
+    hasMatChanged(_: any, mat: any) {
+        try {
+            return this._values.modified;
+        } catch {
+            return -1;
+        }
+    }
 }

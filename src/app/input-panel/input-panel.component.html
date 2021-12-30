@@ -1,12 +1,12 @@
 <div class="container">
-  <div class="row" *ngFor="let row of _values; let i = index">
+    <div class="row" *ngFor="let row of _values.asTable(); let i = index; trackBy: hasMatChanged">
     <div class="col" *ngFor="let col of row; let j = index">
       <input
          [ngStyle]="getStyle(col)"
          type="number"
-         [name]="'angular' + i + '-' + j + '=' + _values[i][j]"
-         [value]="_values[i][j]"
-         (change)="onedit(i, j, $event)"/>
+         [name]="'angular' + i + '-' + j + '=' + _values.asTable()[i][j].val"
+         [(ngModel)]="_values.asTable()[i][j].val"
+         />
     </div>
   </div>
 </div>
