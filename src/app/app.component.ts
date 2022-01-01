@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Vals } from './vals';
+import { KatexOptions } from 'ng-katex';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -17,4 +18,7 @@ export class AppComponent {
       [255, 0, 255, 0, 255, 0, 255, 0],
       [255, 0, 255, 0, 255, 0, 255, 0],
     ]
+    displayKatex : KatexOptions = {
+        displayMode: true
+    }
 }

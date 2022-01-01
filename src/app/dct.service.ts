@@ -18,6 +18,20 @@ export class DCTService {
     ]
     gpu = new GPU()
     cpu = new GPU({mode: 'cpu'})
+    
+    getDCT2() {
+        return this.cpu.createKernel(function (source: any) {
+            let res = 0;
+            for (let i = 0; i < 8; i++) {
+                res += source[0][i] *
+                    Math.cos((3.14 / 8) *
+                             (i + 1/2) *
+                             this.thread.x
+                    );
+            }
+            return res;
+        }).setPrecision('single').setTactic('precision')
+    }
 
     getDCTkernel(cpu = false) {
         return (cpu? this.gpu : this.cpu ).createKernel(function (source: any) {

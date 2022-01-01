@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row" *ngFor="let row of res">
     <div class="col" *ngFor="let col of row">
-        <span [style]="getStyle(col)">{{col}}</span>
+        <span [style]="getStyle(col)">{{formatOutput(col)}}</span>
     </div>
   </div>
 </div>

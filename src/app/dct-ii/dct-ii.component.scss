@@ -1,0 +1,17 @@
+@use '../../variables' as c;
+div.panels {
+    max-width: 100%;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    * {
+        width: 16cm;
+        margin: .4cm;
+    }
+    svg {
+        width: 1cm;
+        .arrow {
+            fill: c.$foreground;
+        }
+    }
+}

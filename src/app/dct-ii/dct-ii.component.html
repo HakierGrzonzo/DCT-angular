@@ -1,0 +1,15 @@
+<input 
+    type="range" 
+    [(ngModel)]="factor" 
+    (ngModelChange)="onChange($event)"
+    max="200">
+<ng-katex [equation]="katex"></ng-katex>
+<div class="panels">
+    <app-brackets>
+        <app-input-panel [(ngModel)]="vals"></app-input-panel>
+    </app-brackets>
+    <ng-katex [equation]="'\\Rightarrow^{DCT-II}'" [options]="displayKatex"></ng-katex>
+    <app-brackets>
+        <app-output-panel [(ngModel)]="vals" [kernel]="kernel"></app-output-panel>
+    </app-brackets>
+</div>

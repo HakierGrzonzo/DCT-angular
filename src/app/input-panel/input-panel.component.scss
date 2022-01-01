@@ -1,19 +1,18 @@
 div.container {
-  width: 5cm;
   div.row {
     display: flex;
-    justify-items: space-between;
     flex-direction: row;
     div.col {
-      width: 30mm;
+      height: 10mm;
+      width: 12.5%;
       display: flex;
       text-align: center;
       input {
-        padding: 3mm;
+        padding: 1mm;
         outline: none;
         border: none;
         appearance: none;
-        width: 15mm;
+        width: 100%;
       }
     }
   }

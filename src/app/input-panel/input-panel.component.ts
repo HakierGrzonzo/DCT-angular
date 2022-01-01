@@ -23,6 +23,9 @@ export class InputPanelComponent implements ControlValueAccessor {
 
     getStyle(c: Value): any {
         let val = new Number(c.val).toString(16)
+        if (c.val < 0) {
+            val = '0';
+        }
         if (val.length < 2) {
             val = "0" + val
         }

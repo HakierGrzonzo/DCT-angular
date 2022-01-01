@@ -6,9 +6,20 @@
 <!-- * * * * * * * * * Delete the template below * * * * * * * * * * -->
 <!-- * * * * * * * to get started with your project! * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<app-input-panel [(ngModel)]="vals"></app-input-panel>
-<app-output-panel [(ngModel)]="vals"></app-output-panel>
-<app-webgl-display></app-webgl-display>
+<div class="container">
+    <h1>Dyskretna transformata cosinusowa</h1>
+    <ng-katex [options]="displayKatex"
+        [equation]="'X_k = \\sum^{N-1}_{n=0} x_n \\cos \\left[ \\frac{\\pi}{N} \\left( n + \\frac{1}{2} \\right) k \\right]'"
+    ></ng-katex>
+    <app-dct-ii></app-dct-ii>
+    <app-brackets>
+        <app-input-panel [(ngModel)]="vals"></app-input-panel>
+    </app-brackets>
+    <app-brackets>
+        <app-output-panel [(ngModel)]="vals"></app-output-panel>
+    </app-brackets>
+    <app-webgl-display></app-webgl-display>
+</div>
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->
 <!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->

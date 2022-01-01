@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DCTService } from '../dct.service';
 
@@ -18,7 +18,7 @@ import { DCTService } from '../dct.service';
 export class OutputPanelComponent implements ControlValueAccessor {
   _values: number[][]
   res: number[][]
-  performDCT = this.dct.getDCTkernel().setOutput([8, 8])
+  @Input("kernel") kernel: any = this.dct.getDCTkernel()
   constructor(private dct : DCTService) { }
 
   ngAfterViewInit(): void {
@@ -31,6 +31,8 @@ export class OutputPanelComponent implements ControlValueAccessor {
     let val = new Number(n).toString(16)
     if (n < 0) {
         val = '0';
+    } else if (c / 4 > 255) {
+        val = 'ff';
     }
     if (val.length < 2) {
       val = "0" + val
@@ -42,10 +44,15 @@ export class OutputPanelComponent implements ControlValueAccessor {
     }
     return style
   }
+    
+    formatOutput(v: number): number {
+        return Math.round(v * 100) / 100
+    }
 
   set values(v: any) {
     this._values = v
-    this.res = this.performDCT(this._values) as number[][]
+    this.kernel.setOutput([v[0].length, v.length])
+    this.res = this.kernel(this._values) as number[][]
     this.propagateChange(v)
   }
 

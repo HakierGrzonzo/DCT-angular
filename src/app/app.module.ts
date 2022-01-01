@@ -7,18 +7,24 @@ import { WebglDisplayComponent } from './webgl-display/webgl-display.component';
 import { InputPanelComponent } from './input-panel/input-panel.component';
 import { OutputPanelComponent } from './output-panel/output-panel.component';
 import { FormsModule } from '@angular/forms';
+import { KatexModule } from 'ng-katex';
+import { DctIIComponent } from './dct-ii/dct-ii.component';
+import { BracketsComponent } from './brackets/brackets.component'; 
 
 @NgModule({
   declarations: [
     AppComponent,
     WebglDisplayComponent,
     InputPanelComponent,
-    OutputPanelComponent
+    OutputPanelComponent,
+    DctIIComponent,
+    BracketsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    KatexModule
   ],
   providers: [],
   bootstrap: [AppComponent]
