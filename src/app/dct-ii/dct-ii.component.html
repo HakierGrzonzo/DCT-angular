@@ -8,8 +8,34 @@
     <app-brackets>
         <app-input-panel [(ngModel)]="vals"></app-input-panel>
     </app-brackets>
-    <ng-katex [equation]="'\\Rightarrow^{DCT-II}'" [options]="displayKatex"></ng-katex>
+    <ng-katex [equation]="'\\Rightarrow'"></ng-katex>
+    <div class="titled-eq">
+        <p>DCT-II</p>
+        <ng-katex [options]="displayKatex"
+            [equation]="'X_k = \\sum^{N-1}_{n=0} x_n \\cos \\left[ \\frac{\\pi}{N} \\left( n + \\frac{1}{2} \\right) k \\right]'"></ng-katex>
+    </div>
+    <ng-katex [equation]="'\\Rightarrow'"></ng-katex>
     <app-brackets>
-        <app-output-panel [(ngModel)]="vals" [kernel]="kernel"></app-output-panel>
+        <app-output-panel [(ngModel)]="vals" [kernel]="[kernel2]"></app-output-panel>
+    </app-brackets>
+    <ng-katex [equation]="'\\Rightarrow'"></ng-katex>
+    <div class="titled-eq">
+        <p>Kwantyzacja (i dekwantyzacja)</p>
+        <ng-katex [options]="displayKatex"
+            [equation]="'X_k = round \\left( \\frac{x_k}{w_k} \\right) \\cdot w_k'"></ng-katex>
+    </div>
+    <ng-katex [equation]="'\\Rightarrow'"></ng-katex>
+    <app-brackets>
+        <app-output-panel [(ngModel)]="vals" [kernel]="[kernel2, quant]"></app-output-panel>
+    </app-brackets>
+    <ng-katex [equation]="'\\Rightarrow'"></ng-katex>
+    <div class="titled-eq">
+        <p>DCT-III</p>
+        <ng-katex [options]="displayKatex"
+            [equation]="'X_k = \\frac{x_0}{2} + \\sum^{N-1}_{n=0} x_n \\cos \\left[ \\frac{\\pi}{N} \\left( k + \\frac{1}{2} \\right) n \\right]'"></ng-katex>
+    </div>
+    <ng-katex [equation]="'\\Rightarrow'"></ng-katex>
+    <app-brackets>
+        <app-output-panel [(ngModel)]="vals" [kernel]="[kernel2, quant, kernel3]"></app-output-panel>
     </app-brackets>
 </div>

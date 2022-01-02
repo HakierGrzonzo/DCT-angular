@@ -4,14 +4,36 @@ div.panels {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
-    * {
+    app-brackets {
         width: 16cm;
         margin: .4cm;
     }
-    svg {
-        width: 1cm;
-        .arrow {
-            fill: c.$foreground;
+    div.titled-eq {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-content: center;
+        margin: 5mm;
+        * {
+            flex: 1;
+            margin: 0;
         }
+        p {
+            font-weight: bold;
+        }
+    }
+}
+
+input[type="range"] {
+    background-color: c.$background;
+    &::-moz-range-thumb {
+        background-color: c.$green;
+        border: none;
+    } 
+    &::-moz-range-track {
+        background-color: c.$blue0;
+    }
+    &::-moz-range-progress {
+        background-color: c.$blue3;
     }
 }

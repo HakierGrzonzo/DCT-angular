@@ -40,6 +40,5 @@ export class Matrix {
             }
             this._mat.push(tmp)
         }
-        console.log(this._mat);
     }
 }

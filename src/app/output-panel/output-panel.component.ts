@@ -18,7 +18,7 @@ import { DCTService } from '../dct.service';
 export class OutputPanelComponent implements ControlValueAccessor {
   _values: number[][]
   res: number[][]
-  @Input("kernel") kernel: any = this.dct.getDCTkernel()
+  @Input("kernel") kernel: any[] = [this.dct.getDCTkernel()]
   constructor(private dct : DCTService) { }
 
   ngAfterViewInit(): void {
@@ -51,8 +51,12 @@ export class OutputPanelComponent implements ControlValueAccessor {
 
   set values(v: any) {
     this._values = v
-    this.kernel.setOutput([v[0].length, v.length])
-    this.res = this.kernel(this._values) as number[][]
+    let tmp : number[][] = this._values
+    for (let i = 0; i < this.kernel.length; i++) {
+        this.kernel[i].setOutput([v[0].length, v.length])
+        tmp = this.kernel[i](tmp) as number[][]
+    }
+    this.res = tmp
     this.propagateChange(v)
   }
 

@@ -9,12 +9,14 @@ import { KatexOptions } from 'ng-katex';
 })
 export class DctIIComponent implements OnInit {
     factor = 0;
-    katex = '';
+    katex = `128 \\cdot \\cos \\left( ${this.factor / 50} x \\right)`;
     vals : number[][] = [[]]
-    kernel = this.dct.getDCT2()
+    kernel2 = this.dct.getDCT2()
+    kernel3 = this.dct.getDCT3()
+    quant = this.dct.getQuant()
     constructor(private dct: DCTService) {
         for (let x = 0; x < 8; x++) {
-            this.vals[0].push(Math.round(Math.cos(2 * x) * 128 + 128))
+            this.vals[0].push(Math.round(Math.cos(0 * x) * 128))
         }
     }
 
@@ -28,10 +30,10 @@ export class DctIIComponent implements OnInit {
     onChange(v: number) {
         let tmp = [[]]
         for (let x = 0; x < 8; x++) {
-            tmp[0].push(Math.round(Math.cos((v / 50) * x) * 256))
+            tmp[0].push(Math.round(Math.cos((v / 50) * x) * 128))
         }
         this.vals = tmp;
-        this.katex = `256 \\cdot \\cos \\left( ${v / 50} x \\right)`
+        this.katex = `128 \\cdot \\cos \\left( ${v / 50} x \\right)`
     }
 
 }

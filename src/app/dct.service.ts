@@ -33,6 +33,29 @@ export class DCTService {
         }).setPrecision('single').setTactic('precision')
     }
 
+    getDCT3() {
+        return this.cpu.createKernel(function (source: any) {
+            let res = 1/2 * source[0][0];
+            for (let i = 0; i < 8; i++) {
+                res += source[0][i] *
+                    Math.cos((3.14 / 8) *
+                             i *
+                             (this.thread.x + 1/2)
+                    );
+            }
+            return res;
+        }).setPrecision('single').setTactic('precision')
+    }
+
+    getQuant() {
+        return this.cpu.createKernel(function (source: any) {
+            return Math.round(
+                source[this.thread.y][this.thread.x] / 
+                this.constants.quants[this.thread.y][this.thread.x]
+            ) * this.constants.quants[this.thread.y][this.thread.x];
+        }).setPrecision('single').setTactic('precision').setConstants({quants: this.quantTable})
+    }
+
     getDCTkernel(cpu = false) {
         return (cpu? this.gpu : this.cpu ).createKernel(function (source: any) {
             function alpha(z: any): any {
