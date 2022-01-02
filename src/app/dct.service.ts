@@ -52,7 +52,14 @@ export class DCTService {
             return Math.round(
                 source[this.thread.y][this.thread.x] / 
                 this.constants.quants[this.thread.y][this.thread.x]
-            ) * this.constants.quants[this.thread.y][this.thread.x];
+            );
+        }).setPrecision('single').setTactic('precision').setConstants({quants: this.quantTable})
+    }
+
+    getUnQuant() {
+        return this.cpu.createKernel(function (source: any) {
+            return source[this.thread.y][this.thread.x] * 
+                this.constants.quants[this.thread.y][this.thread.x];
         }).setPrecision('single').setTactic('precision').setConstants({quants: this.quantTable})
     }
 

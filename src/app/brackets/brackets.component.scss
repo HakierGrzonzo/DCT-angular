@@ -2,8 +2,7 @@
 div.top {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    margin: 5mm;
+    justify-content: space-between;
     table {
         border: none;
         border-spacing: 0;
@@ -22,7 +21,7 @@ div.top {
         }
     }
     .container {
-        width: 80%;
+        width: 90%;
         margin: 5mm 0mm;
     }
 }

@@ -1,19 +1,25 @@
 @use '../../variables' as c;
 div.panels {
-    max-width: 100%;
+    width: 100%;
+    margin-bottom: 5mm;
+    overflow: auto;
     align-items: center;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-gap: 3ex 1ex;
+    @media (max-width: 160ex) {
+        grid-template-columns: 80ex 2.5ex;
+    }
+    grid-template-columns: 42ex 2.5ex auto 2.5ex;
     app-brackets {
         width: 16cm;
-        margin: .4cm;
     }
     div.titled-eq {
         display: flex;
         flex-direction: column;
         align-items: center;
         align-content: center;
-        margin: 5mm;
+        border-bottom: 3px double c.$blue0;
+        border-left: 1px solid c.$blue0;
         * {
             flex: 1;
             margin: 0;
@@ -22,9 +28,22 @@ div.panels {
             font-weight: bold;
         }
     }
+    div.input-func {
+        padding: 2mm;
+        display: flex;
+        width: 300px;
+        border-bottom: 3px double c.$blue0;
+        border-left: 1px solid c.$blue0;
+        flex-direction: column;
+        label {
+            display: flex;
+            align-items: center;
+        }
+    }
 }
 
 input[type="range"] {
+    margin: 5mm;
     background-color: c.$background;
     &::-moz-range-thumb {
         background-color: c.$green;

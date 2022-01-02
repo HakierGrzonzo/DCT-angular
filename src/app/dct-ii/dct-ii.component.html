@@ -1,10 +1,38 @@
-<input 
-    type="range" 
-    [(ngModel)]="factor" 
-    (ngModelChange)="onChange($event)"
-    max="200">
-<ng-katex [equation]="katex"></ng-katex>
+<div class="desc">
+    <p>
+        Dyskretna transformata cosinusowa (DCT), jak sama nazwa wskazuje, transformuje 
+        skończony zakres danych na sumę funkcji cosinus o rosnących częstotliwościach.
+    </p>
+    <p>
+        Na potrzeby tej prezentacji będziemy używali wyłącznie macierzy <em>8x1</em>
+        oraz <em>8x8</em>.
+    </p>
+    <p>
+        Istnieje parę rodzajów <strong>DCT</strong>, pierwszym jaki omówimy będzie 
+        <em>DCT-II</em>, również znany jako <em>te DCT</em>.
+    </p>
+</div>
 <div class="panels">
+    <div class="input-func">
+        <label>
+            <ng-katex [equation]="'m_1'"></ng-katex>
+            <input 
+                type="range" 
+                [(ngModel)]="factor[0]" 
+                (ngModelChange)="onChange($event)"
+                max="200">
+        </label>
+        <label>
+            <ng-katex [equation]="'m_2'"></ng-katex>
+            <input 
+                type="range" 
+                [(ngModel)]="factor[1]" 
+                (ngModelChange)="onChange($event)"
+                max="200">
+        </label>
+        <ng-katex [equation]="katex"></ng-katex>
+    </div>
+    <ng-katex [equation]="'\\Rightarrow'"></ng-katex>
     <app-brackets>
         <app-input-panel [(ngModel)]="vals"></app-input-panel>
     </app-brackets>
@@ -18,11 +46,31 @@
     <app-brackets>
         <app-output-panel [(ngModel)]="vals" [kernel]="[kernel2]"></app-output-panel>
     </app-brackets>
-    <ng-katex [equation]="'\\Rightarrow'"></ng-katex>
+</div>
+<div class="desc">
+    <h2>Kwantyzacja</h2>
+    <p>
+        Kwantyzacja jest stratną metodą kompresji, polegającą na przybliżeniu
+        orginalnej wartości do określonej &bdquo;przedziałki&rdquo;. Dzięki 
+        <em>DCT</em> możemy przypisać osobne wspóczynniki dla składowych
+        o wysokiej częstotliwości.
+    </p>
+    <p>
+        Na potrzeby tej prezentacji będziemy wszędzie używać takiej macierzy
+        kwantyzacji, została ona określona w standardzie <strong>JPEG</strong>:
+    </p>
+    <figure>
+        <app-brackets>
+            <app-arr-to-table [array]="dct.quantTable">
+            </app-arr-to-table>
+        </app-brackets>
+    </figure>
+</div>
+<div class="panels">
     <div class="titled-eq">
-        <p>Kwantyzacja (i dekwantyzacja)</p>
+        <p>Kwantyzacja</p>
         <ng-katex [options]="displayKatex"
-            [equation]="'X_k = round \\left( \\frac{x_k}{w_k} \\right) \\cdot w_k'"></ng-katex>
+            [equation]="'X_k = round \\left( \\frac{x_k}{w_k} \\right)'"></ng-katex>
     </div>
     <ng-katex [equation]="'\\Rightarrow'"></ng-katex>
     <app-brackets>
@@ -30,12 +78,30 @@
     </app-brackets>
     <ng-katex [equation]="'\\Rightarrow'"></ng-katex>
     <div class="titled-eq">
+        <p>Dekwantyzacja</p>
+        <ng-katex [options]="displayKatex"
+            [equation]="'X_k = x_k \\cdot w_k'"></ng-katex>
+    </div>
+    <ng-katex [equation]="'\\Rightarrow'"></ng-katex>
+    <app-brackets>
+        <app-output-panel [(ngModel)]="vals" [kernel]="[kernel2, quant, unquant]"></app-output-panel>
+    </app-brackets>
+</div>
+<div class="desc">
+    <h2>DCT-III</h2>
+    <p>
+        <strong>DCT-III</strong>, znana również jako <em>IDCT</em>, jest transformatą
+        odwrotną do DCT-II. Dostajemy więc wynik <em>przypominający</em> orginał.
+    </p>
+</div>
+<div class="panels">
+    <div class="titled-eq">
         <p>DCT-III</p>
         <ng-katex [options]="displayKatex"
             [equation]="'X_k = \\frac{x_0}{2} + \\sum^{N-1}_{n=0} x_n \\cos \\left[ \\frac{\\pi}{N} \\left( k + \\frac{1}{2} \\right) n \\right]'"></ng-katex>
     </div>
     <ng-katex [equation]="'\\Rightarrow'"></ng-katex>
     <app-brackets>
-        <app-output-panel [(ngModel)]="vals" [kernel]="[kernel2, quant, kernel3]"></app-output-panel>
+        <app-output-panel [(ngModel)]="vals" [kernel]="[kernel2, quant, unquant, kernel3]"></app-output-panel>
     </app-brackets>
 </div>

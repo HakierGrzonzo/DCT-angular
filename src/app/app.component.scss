@@ -1,5 +1,11 @@
-@media (min-width: 800px) {
-    div.container {
-        width: 70%;
+div.container {
+    @media (min-width: 800px) {
+        width: min(90%, 27cm);
+        scale: 100%;
     }
+    @media (max-width: 600px) {
+        width: 130%;
+        scale: 70%;
+    }
+    width: 100%;
 }

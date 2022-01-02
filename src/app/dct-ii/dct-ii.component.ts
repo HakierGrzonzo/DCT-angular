@@ -8,16 +8,22 @@ import { KatexOptions } from 'ng-katex';
   styleUrls: ['./dct-ii.component.scss']
 })
 export class DctIIComponent implements OnInit {
-    factor = 0;
-    katex = `128 \\cdot \\cos \\left( ${this.factor / 50} x \\right)`;
+    factor = [0, 25];
+    katex = `128 \\cdot \\cos \\left( ${this.factor[0] / 50} x \\right)` + 
+        `+ 64\\cdot \\cos \\left( ${this.factor[1] / 50} x \\right)`;
     vals : number[][] = [[]]
     kernel2 = this.dct.getDCT2()
     kernel3 = this.dct.getDCT3()
     quant = this.dct.getQuant()
-    constructor(private dct: DCTService) {
+    unquant = this.dct.getUnQuant()
+    constructor(public dct: DCTService) {
+        let tmp = [[]]
         for (let x = 0; x < 8; x++) {
-            this.vals[0].push(Math.round(Math.cos(0 * x) * 128))
+            tmp[0].push(Math.round(Math.cos((this.factor[0] / 50) * x) * 128 +
+                                  Math.cos((this.factor[1] / 50) * x) * 64))
+
         }
+        this.vals = tmp;
     }
 
     ngOnInit(): void {
@@ -27,13 +33,16 @@ export class DctIIComponent implements OnInit {
         displayMode: true,
     }
     
-    onChange(v: number) {
+    onChange(_: number) {
         let tmp = [[]]
         for (let x = 0; x < 8; x++) {
-            tmp[0].push(Math.round(Math.cos((v / 50) * x) * 128))
+            tmp[0].push(Math.round(Math.cos((this.factor[0] / 50) * x) * 128 +
+                                  Math.cos((this.factor[1] / 50) * x) * 64))
+
         }
         this.vals = tmp;
-        this.katex = `128 \\cdot \\cos \\left( ${v / 50} x \\right)`
+        this.katex = `128 \\cdot \\cos \\left( ${this.factor[0] / 50} x \\right)` + 
+            `+ 64\\cdot \\cos \\left( ${this.factor[1] / 50} x \\right)`;
     }
 
 }

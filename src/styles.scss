@@ -12,6 +12,25 @@ html {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        overflow: scroll;
+        overflow: auto;
     }
+}
+em {
+    color: c.$green;
+}
+
+p {
+    font-size: 13pt;
+    text-align: justify;
+}
+
+h1, h2 {
+    font-size: 20pt;
+    font-weight: bold;
+}
+
+figure {
+    width: 50%;
+    min-width: 40ex;
+    margin: 1cm auto 1cm auto;
 }

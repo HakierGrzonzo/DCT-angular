@@ -9,7 +9,8 @@ import { OutputPanelComponent } from './output-panel/output-panel.component';
 import { FormsModule } from '@angular/forms';
 import { KatexModule } from 'ng-katex';
 import { DctIIComponent } from './dct-ii/dct-ii.component';
-import { BracketsComponent } from './brackets/brackets.component'; 
+import { BracketsComponent } from './brackets/brackets.component';
+import { ArrToTableComponent } from './arr-to-table/arr-to-table.component'; 
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { BracketsComponent } from './brackets/brackets.component';
     InputPanelComponent,
     OutputPanelComponent,
     DctIIComponent,
-    BracketsComponent
+    BracketsComponent,
+    ArrToTableComponent
   ],
   imports: [
     BrowserModule,
