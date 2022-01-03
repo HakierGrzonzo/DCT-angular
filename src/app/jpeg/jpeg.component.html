@@ -45,7 +45,7 @@
     <em>8x8</em>:
 </p>
 <ng-katex
-    [equation]="'X_{u,v} = \\frac{1}{4} \\alpha(u)(v) \\sum^7_{x=0} \\sum^7_{y=0} x_{x,y} \\cos \\left[\\frac{(2x + 1)u\\pi}{16}\\right] \\cos \\left[\\frac{(2y + 1)v\\pi}{16}\\right]'"
+    [equation]="'X_{u,v} = \\frac{1}{4} \\alpha(u)\\alpha(v) \\sum^7_{x=0} \\sum^7_{y=0} x_{x,y} \\cos \\left[\\frac{(2x + 1)u\\pi}{16}\\right] \\cos \\left[\\frac{(2y + 1)v\\pi}{16}\\right]'"
     [options]="displayKatex"
     ></ng-katex>
 <p>
@@ -60,5 +60,51 @@
             [options]="displayKatex"></ng-katex>
         <p>Ma ona na celu sprawienie by macierz zawierająca przekształcone wartości była ortonormalna.</p>
     </li>
+    <li>
+        <strong>x<sub>x,y</sub></strong> to wartość w zakresie <em>[-127; 128]</em>,
+        zatem od naszych wejściowych wartości w zakresie <em>[0; 255]</em> odejmujemy 128.
+    </li>
 </ul>
+<p>Zobaczmy zatem jak wygląda to dla przykładowych danych:</p>
+<div class="preset-input">
+    <div class="inputs">
+        <label for="preset-select">Przykład:</label>
+        <select 
+            id="preset-select"
+            [(ngModel)]="selectedPreset" (ngModelChange)="onPresetChange($event)">
+            <option *ngFor="let preset of presets" [ngValue]="preset">
+                {{ preset.name }}
+            </option>
+        </select>
+    </div>
+    <ng-katex [equation]="'\\Rightarrow'" [options]="displayKatex"></ng-katex>
+    <div>
+    </div>
+    <div></div>
+    <app-brackets>
+        <app-input-panel [(ngModel)]="vals"></app-input-panel>
+    </app-brackets>
+    <ng-katex [equation]="'\\Rightarrow'" [options]="displayKatex"></ng-katex>
+    <p>
+        <strong>DCT-II</strong>
+    </p>
+    <ng-katex [equation]="'\\Rightarrow'" [options]="displayKatex"></ng-katex>
+    <app-brackets>
+        <app-output-panel [(ngModel)]="vals"></app-output-panel>
+    </app-brackets>
+    <ng-katex [equation]="'\\Rightarrow'" [options]="displayKatex"></ng-katex>
+    <p>
+        <strong>Kwantyzacja</strong>
+        <ng-katex 
+            [equation]="'X_{u,v} = round \\left( \\frac{x_{u,v}}{w_{u,v}} \\right)'"></ng-katex>
+    </p>
+    <ng-katex [equation]="'\\Rightarrow'" [options]="displayKatex"></ng-katex>
+    <app-brackets>
+        <app-output-panel 
+            [(ngModel)]="vals" 
+            [kernel]="[dct.getDCTkernel(), dct.getQuant()]"
+            [max]="64"
+            ></app-output-panel>
+    </app-brackets>
+</div>
 

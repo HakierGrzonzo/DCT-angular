@@ -20,18 +20,18 @@ export class OutputPanelComponent implements ControlValueAccessor {
   res: number[][]
   @Input("kernel") kernel: any[] = [this.dct.getDCTkernel()]
   constructor(private dct : DCTService) { }
-
+    @Input("max") maxStyleNum : number = 1024
   ngAfterViewInit(): void {
     setInterval(() => {
     }, 100);
   }
 
   getStyle(c: number): any {
-    let n = Math.round(c / 4)
+    let n = Math.round(c / (this.maxStyleNum / 255))
     let val = new Number(n).toString(16)
     if (n < 0) {
         val = '0';
-    } else if (c / 4 > 255) {
+    } else if (c / (this.maxStyleNum / 255) > 255) {
         val = 'ff';
     }
     if (val.length < 2) {

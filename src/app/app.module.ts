@@ -11,7 +11,8 @@ import { KatexModule } from 'ng-katex';
 import { DctIIComponent } from './dct-ii/dct-ii.component';
 import { BracketsComponent } from './brackets/brackets.component';
 import { ArrToTableComponent } from './arr-to-table/arr-to-table.component';
-import { JpegComponent } from './jpeg/jpeg.component'; 
+import { JpegComponent } from './jpeg/jpeg.component';
+import { EntropyEncodingComponent } from './entropy-encoding/entropy-encoding.component'; 
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { JpegComponent } from './jpeg/jpeg.component';
     DctIIComponent,
     BracketsComponent,
     ArrToTableComponent,
-    JpegComponent
+    JpegComponent,
+    EntropyEncodingComponent
   ],
   imports: [
     BrowserModule,

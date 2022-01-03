@@ -1,0 +1,35 @@
+@use '../../variables' as c;
+div.preset-input {
+    display: grid;
+    grid-gap: 3ex 1ex;
+    align-items: center;
+    @media (max-width: 160ex) {
+        grid-template-columns: 80ex 2.5ex;
+    }
+    grid-template-columns: auto 2.5ex 30ex 2.5ex;
+    p {
+        text-align: center;
+        ng-katex {
+            display: inline-block;
+            margin: 5mm;
+        }
+    }
+    div.inputs {
+        label {
+            font-weight: bold;
+            margin: 5mm;
+        }
+        select {
+            background-color: c.$background;
+            color: c.$blue0;
+            font-weight: bold;
+            padding: 4px;
+            border: 1px solid c.$blue0;
+            transition: all 200ms ease;
+            &:hover {
+                color: c.$green;
+                border-color: c.$green;
+            }
+        }
+    }
+}

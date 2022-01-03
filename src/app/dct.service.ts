@@ -80,7 +80,7 @@ export class DCTService {
             let sum = 0
             for (let x = 0; x < 8; x++) {
               for (let y = 0; y < 8; y++) {
-                const color = source[base_y + y][base_x + x];
+                const color = source[base_y + y][base_x + x] - 128;
                 sum += color * Math.cos(((2 * x + 1) * u * 3.14) / 16) * Math.cos(((2 * y + 1) * v * 3.14) / 16)
               }
             }

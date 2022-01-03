@@ -6,6 +6,8 @@
          type="number"
          [name]="'angular' + i + '-' + j + '=' + _values.asTable()[i][j].val"
          [(ngModel)]="_values.asTable()[i][j].val"
+         min="0"
+         max="255"
          />
     </div>
   </div>
