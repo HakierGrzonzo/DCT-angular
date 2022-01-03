@@ -8,12 +8,15 @@ div {
 
 div.container {
   display: flex;
+  justify-content: space-around;
+  margin-bottom: 1cm;
   div {
     display: flex;
     align-items: center;
     img {
       width: 100%;
       height: auto;
+      filter: grayscale(100%);
     }
   }
 }

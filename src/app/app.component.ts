@@ -21,4 +21,10 @@ export class AppComponent {
     displayKatex : KatexOptions = {
         displayMode: true
     }
+    images = [
+        "assets/test.png",
+        "assets/dragons.png",
+        "assets/sus.png",
+        "assets/polsl.png",
+    ]
 }
