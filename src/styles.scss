@@ -46,6 +46,12 @@ figure {
     max-width: 50%;
     min-width: 40ex;
     margin: 1cm auto 1cm auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+        max-height: 8cm;
+    }
 }
 
 li {

@@ -107,4 +107,67 @@
             ></app-output-panel>
     </app-brackets>
 </div>
-
+<h2>Kodowanie Huffmana</h2>
+<p>
+    Standard <strong>JPEG</strong> przewiduje specyficzny sposób odczytu kolejnych
+    wartości z macierzy z kwantyfikowanymi wartościami, zamiast czytać je po kolei,
+    to czytamy je <em>zygzakiem</em>, od lewego górnego kąta, do prawego dolnego,
+    gdzie będzie najwięcej zer. Po angielsku ten sposób zwany jest <em>entropy coding</em>.
+</p>
+<figure>
+    <img 
+        src="/assets/entropyZigZag.svg" 
+        alt="Obrazek przedstawiający jak zygzakiem są sczytywane kolejne komórki, od (0, 0) -- (1, 0) -- (0, 1) -- (0, 2) -- (1, 1)...">
+</figure>
+<app-entropy-encoding             
+    [kernel]="[dct.getDCTkernel(), dct.getQuant()]"
+    [(ngModel)]="vals"
+></app-entropy-encoding>
+<p>
+    Znak <strong>EOB</strong> oznacza że reszta bloku składa się z samych zer.
+    Wiedząc że każdy blok składa się z 64 wartości możemy sami dopisać resztę.
+</p>
+<h2>Dekodowanie DCT</h2>
+<p>
+Podobnie jak przy kodowaniu, przy dekodowaniu standard zakłada inną formę 
+<em>DCT-III</em>:
+</p>
+<ng-katex
+    [equation]="'X_{x,y} = \\frac{1}{4} \\sum^7_{x=0} \\sum^7_{y=0} \\alpha(u)\\alpha(v) x_{u,v} \\cos \\left[\\frac{(2x + 1)u\\pi}{16}\\right] \\cos \\left[\\frac{(2y + 1)v\\pi}{16}\\right]'"
+    [options]="displayKatex"
+    ></ng-katex>
+<p>
+    Po dekwantyfikacji możemy odtworzyć oryginalne dane
+</p>
+<div class="preset-input">
+    <app-brackets>
+        <app-output-panel 
+            [(ngModel)]="vals" 
+            [kernel]="[dct.getDCTkernel(), dct.getQuant(), dct.getUnQuant()]"
+            [max]="1024"
+            ></app-output-panel>
+    </app-brackets>
+    <ng-katex [equation]="'\\Rightarrow'" [options]="displayKatex"></ng-katex>
+    <p>
+        <strong>DCT-III</strong>
+    </p>
+    <ng-katex [equation]="'\\Rightarrow'" [options]="displayKatex"></ng-katex>
+    <app-brackets>
+        <app-output-panel 
+            [(ngModel)]="vals" 
+            [kernel]="[dct.getDCTkernel(), dct.getQuant(), dct.getUnQuant(), dct.getDCT3kernel()]"
+            [max]="255"
+            ></app-output-panel>
+    </app-brackets>
+    <div></div>
+    <div class="inputs">
+        <label for="preset-select">Przykład:</label>
+        <select 
+            id="preset-select"
+            [(ngModel)]="selectedPreset" (ngModelChange)="onPresetChange($event)">
+            <option *ngFor="let preset of presets" [ngValue]="preset">
+                {{ preset.name }}
+            </option>
+        </select>
+    </div>
+</div>

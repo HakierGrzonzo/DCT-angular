@@ -24,7 +24,9 @@ div.preset-input {
             color: c.$blue0;
             font-weight: bold;
             padding: 4px;
+            margin: 4px;
             border: 1px solid c.$blue0;
+            outline: none !important;
             transition: all 200ms ease;
             &:hover {
                 color: c.$green;

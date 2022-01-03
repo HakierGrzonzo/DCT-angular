@@ -1,1 +1,31 @@
-<p>entropy-encoding works!</p>
+<div class="container">
+    <app-brackets>
+        <table class="normal">
+            <tr *ngFor="let row of processed">
+                <td *ngFor="let cell of row">{{ cell }}</td>
+            </tr>
+        </table>
+    </app-brackets>
+    <ng-katex [equation]="'\\Rightarrow'" [options]="displayKatex"></ng-katex>
+    <table class="normal">
+        <tr *ngFor="let row of encoded">
+            <td *ngFor="let cell of row">{{ cell }}</td>
+        </tr>
+    </table>
+    <div>
+        <p>
+            Większość enkoderów <em>JPEG</em> korzysta z tablic sprecyzowanych
+            przez standard, lecz możliwe jest załączenie własnej.
+        </p>
+        <table class="prob">
+            <tr>
+                <th>Symbol</th>
+                <th>Prawdopodobieństwo</th>
+            </tr>
+            <tr *ngFor="let prob of probabilities">
+                <td class="symbol">{{ prob.symbol }}</td>
+                <td class="prob">{{ prob.count }} / {{ probablityCount }}</td>
+            </tr>
+        </table>
+    </div>
+</div>

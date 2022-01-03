@@ -1,0 +1,33 @@
+@use '../../variables' as c;
+div.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    table.normal {
+        td {
+            width: 2em;
+            text-align: center;
+            height: 1em;
+        }
+    }
+    p {
+        max-width: 7cm;
+    }
+    table.prob {
+        border-collapse: collapse;
+        th {
+            border-bottom: 1px solid c.$blue0;
+            padding: 1mm 4mm;
+            &:first-child {
+                border-right: 1px solid c.$blue0;
+            }
+        }
+        td {
+            padding: 1mm 4mm;
+            &:first-child {
+                border-right: 1px solid c.$blue0;
+            }
+        }
+    }
+}

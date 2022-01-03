@@ -18,9 +18,7 @@ export class DCTService {
     ]
     gpu = new GPU()
     cpu = new GPU({mode: 'cpu'})
-    
-    getDCT2() {
-        return this.cpu.createKernel(function (source: any) {
+    _dct2 = this.cpu.createKernel(function (source: any) {
             let res = 0;
             for (let i = 0; i < 8; i++) {
                 res += source[0][i] *
@@ -31,10 +29,12 @@ export class DCTService {
             }
             return res;
         }).setPrecision('single').setTactic('precision')
-    }
 
-    getDCT3() {
-        return this.cpu.createKernel(function (source: any) {
+    getDCT2() {
+        return this._dct2
+    }
+    
+    _dct3 = this.cpu.createKernel(function (source: any) {
             let res = 1/2 * source[0][0];
             for (let i = 0; i < 8; i++) {
                 res += source[0][i] *
@@ -44,27 +44,29 @@ export class DCTService {
                     );
             }
             return res;
-        }).setPrecision('single').setTactic('precision')
+        }).setPrecision('single').setTactic('precision') 
+    getDCT3() {
+        return this._dct3
     }
-
-    getQuant() {
-        return this.cpu.createKernel(function (source: any) {
+    
+    _quant = this.cpu.createKernel(function (source: any) {
             return Math.round(
                 source[this.thread.y][this.thread.x] / 
                 this.constants.quants[this.thread.y][this.thread.x]
             );
         }).setPrecision('single').setTactic('precision').setConstants({quants: this.quantTable})
+    getQuant() {
+        return this._quant 
     }
 
-    getUnQuant() {
-        return this.cpu.createKernel(function (source: any) {
+    _unquant = this.cpu.createKernel(function (source: any) {
             return source[this.thread.y][this.thread.x] * 
                 this.constants.quants[this.thread.y][this.thread.x];
         }).setPrecision('single').setTactic('precision').setConstants({quants: this.quantTable})
+    getUnQuant() {
+        return this._unquant
     }
-
-    getDCTkernel(cpu = false) {
-        return (cpu? this.gpu : this.cpu ).createKernel(function (source: any) {
+    _dctKernel = this.cpu.createKernel(function (source: any) {
             function alpha(z: any): any {
               if (z == 0) {
                 return 1 / Math.sqrt(2)
@@ -86,7 +88,36 @@ export class DCTService {
             }
             const res = Math.round(sum * post_dct)
             return res
-        }).setPrecision('single').setTactic('precision')
+        }).setPrecision('single').setTactic('precision') 
+    getDCTkernel(_ = false) {
+        return this._dctKernel
+    }
+    
+    dct3kernel = this.cpu.createKernel(function (data: any) {
+        function alpha(z: any): any {
+            if (z == 0) {
+                return 1 / Math.sqrt(2)
+            } else {
+                return 1
+            }
+        }
+        const base_x = this.thread.x - this.thread.x % 8
+        const base_y = this.thread.y - this.thread.y % 8
+        let sum = 0
+        for (let u = 0; u < 8; u++) {
+            for (let v = 0; v < 8; v++) {
+                const post_dct = alpha(u) * alpha(v) * 
+                    (data[base_y + u][base_x + v]);
+                sum += post_dct * 
+                    Math.cos(((2 * (this.thread.x % 8) + 1) * v * 3.14) / 16) * 
+                    Math.cos(((2 * (this.thread.y % 8) + 1) * u * 3.14) / 16) / 4
+            }
+        }
+        return Math.min(Math.max(Math.round(sum + 128), 0), 255)
+      }).setPrecision('single').setTactic('precision')
+
+    getDCT3kernel() {
+        return this.dct3kernel
     }
 
     getGraphicalDCT(cpu = false) {

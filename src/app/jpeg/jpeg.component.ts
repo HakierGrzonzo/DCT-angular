@@ -98,7 +98,7 @@ export class JpegComponent implements OnInit {
         {
             name: 'Gradient x + y',
             generator: (x: number, y: number) => {
-                return Math.round((x + y) * 18.21)
+                return Math.round(255 - (x + y) * 18.21)
             }
         },
     ]
