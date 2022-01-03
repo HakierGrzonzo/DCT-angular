@@ -1,0 +1,64 @@
+<h1>Implementacja DCT w kodowaniu ISO 10918-1 (JPEG)</h1>
+<p>
+    Kodowanie <strong>JPEG</strong> wykorzystuje jest jednym z wielu przykładów
+    wykorzystania <em>DCT</em> do kompresji obrazów, ale jest za to jednym z pierwszych
+    (oryginalny standard z 1992 roku), przez to jest jednym z prostszych kodów.
+</p>
+<p>
+    Standard zakłada następujący proces kodowania:
+</p>
+<ul>
+    <li>
+        Transformacja z przestrzeni barw <strong>RGB</strong> na 
+        <strong>YC<sub>b</sub>C<sub>r</sub></strong> - jest to krok opcjonalny, 
+        można kodować obrazy również w <strong>RGB</strong>, my będziemy kodować
+        tylko <strong>Y</strong>, czyli obrazy czarno-białe.
+    </li>
+    <li>
+        <strong>Podpróbkowanie chrominancji</strong> - Jeżeli obraz został przekształcony do przestrzeni
+        barw <strong>YC<sub>b</sub>C<sub>r</sub></strong>, to możemy zmniejszyć
+        rozdzielczość sygnałów <strong>C<sub>b</sub>C<sub>r</sub></strong>, ponieważ
+        ludzkie oko lepiej radzi sobie z rozróżnianiem jasności, niż koloru. Od
+        tego momentu każdy sygnał jest przetwarzany osobno.
+    </li>
+    <li>
+        <strong>Podział na bloki</strong> - <em>DCT</em> operuje na skończonej ilości 
+        informacji, więc dzielimy nasz obraz na bloki <em>8x8</em>. Jeżeli rozmiar
+        obrazka nie jest podzielny przez osiem, to podczas kodowania to trzeba 
+        uzupełnić brakujące dane w jakiś sposób, który zminimalizuje artefakty
+        przy kodowaniu (moja implementacja powtarza piksele z krawędzi).
+    </li>
+    <li>
+        <strong>DCT</strong>
+    </li>
+    <li>
+        <strong>Kwantyzacja</strong>
+    </li>
+    <li>
+        <strong>Kodowanie Huffmana</strong> lub <strong>Kodowanie arytmetyczne</strong>
+    </li>
+</ul>
+<h2>DCT w kodowaniu JPEG</h2>
+<p>
+    Standard <strong>JPEG</strong> zakłada trochę inną formę <em>DCT-II</em>,
+    główna różnica w stosunku do poprzedniej formy to działanie na macierzach kwadratowych
+    <em>8x8</em>:
+</p>
+<ng-katex
+    [equation]="'X_{u,v} = \\frac{1}{4} \\alpha(u)(v) \\sum^7_{x=0} \\sum^7_{y=0} x_{x,y} \\cos \\left[\\frac{(2x + 1)u\\pi}{16}\\right] \\cos \\left[\\frac{(2y + 1)v\\pi}{16}\\right]'"
+    [options]="displayKatex"
+    ></ng-katex>
+<p>
+    Gdzie:
+</p>
+<ul>
+    <li>x oraz y są współrzędnymi w blokach wejściowych, u oraz v w blokach wyjściowych</li>
+    <li>
+        <p>Funkcja pomocnicza dana jest wzorem:</p>
+        <ng-katex 
+            [equation]="'\\alpha(z) = \\begin{cases} \\frac{\\sqrt{2}}{2} & \\text{dla} \\; z = 0 \\\\ 1 & \\text{dla} \\; z \\neq 0 \\end{cases} '"
+            [options]="displayKatex"></ng-katex>
+        <p>Ma ona na celu sprawienie by macierz zawierająca przekształcone wartości była ortonormalna.</p>
+    </li>
+</ul>
+

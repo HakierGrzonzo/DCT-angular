@@ -20,7 +20,7 @@
                 type="range" 
                 [(ngModel)]="factor[0]" 
                 (ngModelChange)="onChange($event)"
-                max="200">
+                max="100">
         </label>
         <label>
             <ng-katex [equation]="'m_2'"></ng-katex>
@@ -28,7 +28,7 @@
                 type="range" 
                 [(ngModel)]="factor[1]" 
                 (ngModelChange)="onChange($event)"
-                max="200">
+                max="100">
         </label>
         <ng-katex [equation]="katex"></ng-katex>
     </div>
@@ -92,6 +92,8 @@
     <p>
         <strong>DCT-III</strong>, znana również jako <em>IDCT</em>, jest transformatą
         odwrotną do DCT-II. Dostajemy więc wynik <em>przypominający</em> orginał.
+        Jednak ewentualne zastosowanie <em>DCT</em> do kompresji obrazów wymaga jeszcze
+        paru modyfikacji.
     </p>
 </div>
 <div class="panels">

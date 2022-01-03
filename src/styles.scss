@@ -19,18 +19,35 @@ em {
     color: c.$green;
 }
 
-p {
+p, li {
     font-size: 13pt;
     text-align: justify;
+    line-height: 1.5;
+}
+
+h1 {
+    margin-top: 3cm;
+    font-size: 25pt;
+    margin-bottom: 1cm;
+}
+
+h2 {
+    margin-top: 1.5cm;
+    font-size: 20pt;
+    margin-bottom: 1cm;
 }
 
 h1, h2 {
-    font-size: 20pt;
+    margin-left: 1cm;
     font-weight: bold;
 }
 
 figure {
-    width: 50%;
+    max-width: 50%;
     min-width: 40ex;
     margin: 1cm auto 1cm auto;
+}
+
+li {
+    margin: 6mm 0;
 }
