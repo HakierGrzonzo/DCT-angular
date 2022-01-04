@@ -12,6 +12,47 @@
     <app-jpeg></app-jpeg>
     <h1>Przykłady niesyntetyczne</h1>
     <app-webgl-display *ngFor="let image of images" [src]="image"></app-webgl-display>
+    <h1>Wnioski</h1>
+    <ul>
+        <li><strong>DCT</strong> jest podstawą wielu kodów do kompresji obrazów.</li>
+        <li>
+            <strong>DCT</strong> poprzez brak płynnych przejść między blokami 
+            nie nadaje się do kompresji audio. Należy jednak zauważyć że wariacja
+            <em>MDCT</em> została do tego celu stworzona.
+        </li>
+    </ul>
+    <h2>Inne:</h2>
+    <ul>
+        <li>
+            Kod źródłowy tej prezentacji
+            <a href="https://github.com/HakierGrzonzo/DCT-angular">dostępny jest 
+            na moim Githubie.</a> Jak ktoś lubi angulara to może naprawić skalowanie.
+        </li>
+        <li>
+            <a href="https://github.com/gpujs/gpu.js/#readme">GPU.js</a> - Biblioteka
+            która sprawia że ta strona ma 7% błędu, ale nie działa tak szybko, <em>float8 FTW!</em>
+        </li>
+        <li>
+            Źródła:
+            <ul>
+                <li>
+                    <a href="https://scholarworks.gsu.edu/cgi/viewcontent.cgi?article=1032&context=cs_theses">
+                        Serpil Tokdemir - DCT Implementation on GPU - Georgia State University
+                    </a>
+                </li>
+                <li>
+                    <a href="https://youtu.be/n_uNPbdenRs">
+                        Computerphile - Seria materiałów o kodowaniu JPEG
+                    </a>
+                </li>
+                <li>
+                    <a href="https://en.wikipedia.org/wiki/JPEG#Encoding">
+                        Strona której nie należy wspominać
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
 </div>
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->
