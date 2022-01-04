@@ -1,6 +1,6 @@
 <div class="desc">
     <p>
-        Dyskretna transformata cosinusowa (DCT), jak sama nazwa wskazuje, transformuje 
+        Dyskretna transformata cosinusowa (DCT), transformuje 
         skończony zakres danych na sumę funkcji cosinus o rosnących częstotliwościach.
         Została ona opracowana przez <em>Nasir'a Achmed'a</em> w 1972 roku.
     </p>
@@ -9,7 +9,7 @@
         oraz <em>8x8</em>.
     </p>
     <p>
-        Istnieje parę rodzajów <strong>DCT</strong>, pierwszym jaki omówimy będzie 
+        Istnieje kilka rodzajów <strong>DCT</strong>. Pierwszym jaki omówimy będzie 
         <em>DCT-II</em>, również znany jako <em>te DCT</em>.
     </p>
 </div>
@@ -52,13 +52,13 @@
     <h2>Kwantyzacja</h2>
     <p>
         Kwantyzacja jest stratną metodą kompresji, polegającą na przybliżeniu
-        orginalnej wartości do określonej &bdquo;przedziałki&rdquo;. Dzięki 
+        oryginalnej wartości do określonej &bdquo;przedziałki&rdquo;. Dzięki 
         <em>DCT</em> możemy przypisać osobne wspóczynniki dla składowych
-        o wysokiej częstotliwości.
+        o różnych częstotliwościach.
     </p>
     <p>
         Na potrzeby tej prezentacji będziemy wszędzie używać takiej macierzy
-        kwantyzacji, została ona określona w standardzie <strong>JPEG</strong>:
+        kwantyzacji. Została ona określona w standardzie <strong>JPEG</strong>:
     </p>
     <figure>
         <app-brackets>
@@ -92,7 +92,7 @@
     <h2>DCT-III</h2>
     <p>
         <strong>DCT-III</strong>, znana również jako <em>IDCT</em>, jest transformatą
-        odwrotną do DCT-II. Dostajemy więc wynik <em>przypominający</em> orginał.
+        odwrotną do DCT-II. Dostajemy więc wynik <em>przypominający</em> oryginał.
         Jednak ewentualne zastosowanie <em>DCT</em> do kompresji obrazów wymaga jeszcze
         paru modyfikacji.
     </p>

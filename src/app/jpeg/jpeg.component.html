@@ -1,11 +1,12 @@
 <h1>Implementacja DCT w kodowaniu ISO 10918-1 (JPEG)</h1>
 <p>
-    Kodowanie <strong>JPEG</strong> wykorzystuje jest jednym z wielu przykładów
-    wykorzystania <em>DCT</em> do kompresji obrazów, ale jest za to jednym z pierwszych
-    (oryginalny standard z 1992 roku), przez to jest jednym z prostszych kodów.
+    Kodowanie <strong>JPEG</strong> jest jednym z wielu przykładów
+    wykorzystania <em>DCT</em> do kompresji obrazów. Oryginalny standard pochodzi z 
+    1992 roku. Mimo swojej prostoty w porównaniu z nowszymi kodami, jest ono nadal
+    bardzo często wykorzystywane.
 </p>
 <p>
-    Standard zakłada następujący proces kodowania:
+    Oryginalny standard zakłada następujący proces kodowania:
 </p>
 <ul>
     <li>
@@ -114,6 +115,10 @@
     to czytamy je <em>zygzakiem</em>, od lewego górnego kąta, do prawego dolnego,
     gdzie będzie najwięcej zer. Po angielsku ten sposób zwany jest <em>entropy coding</em>.
 </p>
+<p>
+    Możliwe jest również zastosowanie kodu arytmetycznego, jednak nie jest on 
+    często wspierany przez dekodery.
+</p>
 <figure>
     <img 
         src="assets/entropyZigZag.svg" 
@@ -124,21 +129,33 @@
     [(ngModel)]="vals"
 ></app-entropy-encoding>
 <p>
-    Znak <strong>EOB</strong> oznacza że reszta bloku składa się z samych zer.
+    Znak <strong>EOB</strong> oznacza, że reszta bloku składa się z samych zer.
     Wiedząc że każdy blok składa się z 64 wartości możemy sami dopisać resztę.
 </p>
-<h2>Dekodowanie DCT</h2>
+<h1>Dekodowanie JPEG</h1>
+
 <p>
-Podobnie jak przy kodowaniu, przy dekodowaniu standard zakłada inną formę 
-<em>DCT-III</em>:
+    W celu zdekodowania obrazu musimy wykonać operacje przeciwne w stosunku do 
+    kodowania:
+</p>
+<ul>
+    <li>Dekodowanie Huffmana</li>
+    <li>Dekwantyzacja</li>
+    <li>IDCT</li>
+    <li>Transformacja do przestrzeni barw <strong>RGB</strong> w ramach potrzeby</li>
+</ul>
+
+<h2>Dekwantyzacja i dekodowanie DCT</h2>
+<p>
+    Po dekwantyzacji danych możemy uzyskać za pomocą <em>IDCT</em> oryginalny obraz 
+    (w gorszej jakości).
+    Podobnie jak przy kodowaniu, przy dekodowaniu standard zakłada inną formę 
+    <em>DCT-III</em>:
 </p>
 <ng-katex
-    [equation]="'X_{x,y} = \\frac{1}{4} \\sum^7_{x=0} \\sum^7_{y=0} \\alpha(u)\\alpha(v) x_{u,v} \\cos \\left[\\frac{(2x + 1)u\\pi}{16}\\right] \\cos \\left[\\frac{(2y + 1)v\\pi}{16}\\right]'"
+    [equation]="'X_{x,y} = \\frac{1}{4} \\sum^7_{u=0} \\sum^7_{v=0} \\alpha(u)\\alpha(v) x_{u,v} \\cos \\left[\\frac{(2x + 1)u\\pi}{16}\\right] \\cos \\left[\\frac{(2y + 1)v\\pi}{16}\\right]'"
     [options]="displayKatex"
     ></ng-katex>
-<p>
-    Po dekwantyfikacji możemy odtworzyć oryginalne dane
-</p>
 <div class="preset-input">
     <app-brackets>
         <app-output-panel 
